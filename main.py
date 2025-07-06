@@ -1,24 +1,20 @@
-import os
-import json
-
-from dotenv import load_dotenv
-from openai import OpenAI
-
-load_dotenv()
-api_key = os.environ.get("API_KEY", "123")
+from app.core.browser import Browser
 
 
-client = OpenAI(
-    api_key=api_key,
-    base_url="https://api.perplexity.ai"
-)
+class Crawler:
+    def __init__(self, url):
+        self.url = url
+        self.browser = Browser(headless=False, silent=False)
 
-response = client.chat.completions.create(
-    model="sonar",  # 可选模型，按需更换
-    messages=[
-        {"role": "user", "content": "你好，Perplexity！"}
-    ]
-)
+    def crawl(self):
+        if self.browser.start_recording():
+            print("Crawling...")
+        else:
+            print("Failed to start recording. Cannot crawl.")
 
-response_dict = response.model_dump()
-print(json.dumps(response_dict, indent=2, ensure_ascii=False))
+
+if __name__ == "__main__":
+    # Example usage
+    target_url = "https://example.com"
+    crawler = Crawler(target_url)
+    crawler.crawl()
