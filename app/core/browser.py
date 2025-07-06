@@ -22,30 +22,27 @@ class Browser:
         self.setup_driver()
 
     def setup_driver(self):
-        """配置并启动Chrome浏览器（无头模式）"""
+        options = uc.ChromeOptions()
+        options.version_main = 138
+
         if self.driver:
             self.close_driver()
 
-        chrome_options = Options()
-        chrome_options.binary_location = Config.CHROME_BINARY_PATH
-
         if self.headless:
-            chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--no-sandbox")
+            options.add_argument("--headless=new")
 
         if self.silent:
-            chrome_options.add_argument("--mute-audio")
+            options.add_argument("--mute-audio")
 
-        chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--no-sandbox")
 
         try:
-            service = Service(executable_path=Config.BROWSER_DRIVER_PATH)
-            self.driver = webdriver.Chrome(service=service, options=chrome_options)
+            self.driver = uc.Chrome(
+                options=options,
+                use_subprocess=False,
+                driver_path="/usr/local/bin/chromedriver",
+            )
             print("Chrome driver started successfully.")
         except WebDriverException as e:
             print(f"Error starting Chrome driver: {e}")
