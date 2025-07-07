@@ -2,16 +2,10 @@ import time
 
 import undetected_chromedriver as uc
 
-from selenium import webdriver
 from selenium.common import TimeoutException, WebDriverException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-
-
-from .config import Config
 
 
 class Browser:
@@ -19,11 +13,10 @@ class Browser:
         self.headless = headless
         self.silent = silent
         self.driver = None
-        self.setup_driver()
 
     def setup_driver(self):
         options = uc.ChromeOptions()
-        options.version_main = 138
+        # options.version_main = 138
 
         if self.driver:
             self.close_driver()
@@ -41,7 +34,9 @@ class Browser:
             self.driver = uc.Chrome(
                 options=options,
                 use_subprocess=False,
-                driver_path="/usr/local/bin/chromedriver",
+                driver_executable_path="/usr/local/bin/chromedriver",
+                service_args=["--verbose"],  # 启用详细日志
+                service_log_path="chromedriver.log",  # 输出日志到文件
             )
             print("Chrome driver started successfully.")
         except WebDriverException as e:
