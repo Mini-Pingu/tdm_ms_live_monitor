@@ -1,5 +1,4 @@
 import base64
-from pathlib import Path
 
 
 class Utils(object):
@@ -9,3 +8,6 @@ class Utils(object):
         with open(audio_path, "rb") as audio_file:
             audio_data = audio_file.read()
             return base64.b64encode(audio_data).decode("utf-8")
+
+
+utils = Utils()
