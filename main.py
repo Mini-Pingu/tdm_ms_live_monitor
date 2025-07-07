@@ -1,20 +1,21 @@
-# import time
-# from app.core.browser import Browser
-import json
 from app.core.sender import Sender
+from app.core.utils import Utils
 
 
 class Crawler:
     def __init__(self):
-        # self.browser = Browser(headless=False, silent=False)
         self.sender = Sender()
+        self.utils = Utils()
 
     def crawl(self):
+        audio_path = "./data/demo.mp3"
+        audio_base64 = self.utils.convert_audio_base64(audio_path)
         data = {
             "title": "Title",
             "sumarization": "sumarization",
             "date": "2025-07-08 11:00:00",
             "source": "MS",
+            "audioFrequencyData": audio_base64,
             "dialogs": [
                 {"timeStr": "00:10", "content": "content1"},
                 {"timeStr": "00:20", "content": "content2"},
@@ -25,11 +26,6 @@ class Crawler:
             ],
         }
         print(self.sender.send(data))
-
-        # self.browser.setup_driver()
-        # self.browser.driver.get(self.url)
-        # time.sleep(30)
-        # self.browser.close_driver()
 
 
 if __name__ == "__main__":
