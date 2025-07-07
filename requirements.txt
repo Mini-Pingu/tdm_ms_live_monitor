@@ -1,0 +1,137 @@
+annotated-types==0.7.0
+anyio==4.9.0
+appdirs==1.4.4
+astroid @ file:///croot/astroid_1736455921794/work
+atomicwrites==1.4.0
+attrs==25.3.0
+autopep8 @ file:///croot/autopep8_1708962882016/work
+black @ file:///croot/black_1737659122412/work
+Brotli @ file:///croot/brotli-split_1736182456865/work
+brotlicffi @ file:///croot/brotlicffi_1736182461069/work
+certifi==2025.6.15
+cffi @ file:///croot/cffi_1736182485317/work
+charset-normalizer==3.4.2
+click @ file:///croot/click_1744271578095/work
+contourpy @ file:///croot/contourpy_1732540045555/work
+cycler @ file:///tmp/build/80754af9/cycler_1637851556182/work
+dill @ file:///croot/dill_1715094664823/work
+distro==1.9.0
+docstring-to-markdown @ file:///work/perseverance-python-buildout/croot/docstring-to-markdown_1698864372211/work
+dotenv==0.9.9
+filelock==3.18.0
+flake8 @ file:///croot/flake8_1726157165993/work
+fonttools @ file:///croot/fonttools_1737039080035/work
+fsspec==2025.5.1
+h11==0.16.0
+hf-xet==1.1.5
+hf_transfer==0.1.9
+httpcore==1.0.9
+httpx==0.28.1
+huggingface-hub==0.33.1
+idna==3.10
+importlib_metadata @ file:///croot/importlib_metadata-suite_1732633488278/work
+isort @ file:///croot/isort_1741284882758/work
+jedi @ file:///croot/jedi_1733987392413/work
+Jinja2==3.1.6
+jiter==0.10.0
+jsonpointer==2.1
+kiwisolver @ file:///croot/kiwisolver_1737039087198/work
+llvmlite==0.44.0
+MarkupSafe==2.1.5
+matplotlib==3.10.0
+mccabe @ file:///opt/conda/conda-bld/mccabe_1644221741721/work
+mkl-service==2.4.0
+mkl_fft @ file:///io/mkl313/mkl_fft_1730824109137/work
+mkl_random @ file:///io/mkl313/mkl_random_1730823916628/work
+more-itertools==10.7.0
+mpmath==1.3.0
+mypy-extensions @ file:///work/perseverance-python-buildout/croot/mypy_extensions_1698863276135/work
+networkx==3.5
+numba==0.61.2
+numpy==2.2.6
+nvidia-cublas-cu12==12.9.1.4
+nvidia-cuda-cupti-cu12==12.9.79
+nvidia-cuda-nvrtc-cu12==12.9.86
+nvidia-cuda-runtime-cu12==12.9.79
+nvidia-cudnn-cu12==9.10.2.21
+nvidia-cufft-cu12==11.4.1.4
+nvidia-cufile-cu12==1.14.1.1
+nvidia-curand-cu12==10.3.10.19
+nvidia-cusolver-cu12==11.7.5.82
+nvidia-cusparse-cu12==12.5.10.65
+nvidia-cusparselt-cu12==0.7.1
+nvidia-nccl-cu12==2.27.3
+nvidia-nvjitlink-cu12==12.9.86
+nvidia-nvtx-cu12==12.9.79
+openai==1.93.0
+openai-whisper==20250625
+outcome==1.3.0.post0
+packaging @ file:///croot/packaging_1734472117206/work
+parso @ file:///croot/parso_1733963305961/work
+pathspec @ file:///work/perseverance-python-buildout/croot/pathspec_1698805478393/work
+pillow==11.2.1
+platformdirs==4.3.8
+pluggy @ file:///croot/pluggy_1733169602837/work
+pyasn1 @ file:///Users/ktietz/demo/mc3/conda-bld/pyasn1_1629708007385/work
+pyasn1-modules==0.2.8
+pycodestyle @ file:///croot/pycodestyle_1726150303809/work
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pydantic==2.11.7
+pydantic_core==2.33.2
+pydocstyle @ file:///work/perseverance-python-buildout/croot/pydocstyle_1698865417470/work
+pydub==0.25.1
+pyflakes @ file:///croot/pyflakes_1708962956225/work
+pylint @ file:///croot/pylint_1743709189542/work
+pyls-spyder==0.4.0
+pyparsing @ file:///croot/pyparsing_1731445506121/work
+PyQt5==5.15.10
+PyQt5-Qt5==5.15.17
+PyQt5_sip==12.17.0
+PyQt6==6.7.1
+PyQt6_sip @ file:///croot/pyqt-split_1744804475988/work/pyqt_sip
+PyQtWebEngine==5.15.6
+PyQtWebEngine-Qt5==5.15.17
+PySocks @ file:///work/perseverance-python-buildout/croot/pysocks_1698845478203/work
+python-dateutil @ file:///croot/python-dateutil_1716495738603/work
+python-dotenv==1.1.1
+python-lsp-jsonrpc @ file:///croot/python-lsp-jsonrpc_1708962872556/work
+python-lsp-server @ file:///croot/python-lsp-server_1743715803089/work
+pytoolconfig @ file:///croot/pytoolconfig_1701728692402/work
+pytorch-triton==3.3.1+gitc8757738
+PyYAML==6.0.2
+regex==2024.11.6
+requests==2.32.4
+rope @ file:///croot/rope_1743709207023/work
+selenium==4.34.0
+setuptools==72.1.0
+sip @ file:///croot/sip_1738856193618/work
+six @ file:///croot/six_1744271502820/work
+sniffio==1.3.1
+snowballstemmer @ file:///tmp/build/80754af9/snowballstemmer_1637937080595/work
+sortedcontainers==2.4.0
+sympy==1.14.0
+tiktoken==0.9.0
+tomli @ file:///work/perseverance-python-buildout/croot/tomli_1698805555176/work
+tomlkit @ file:///croot/tomlkit_1728650307440/work
+torch==2.8.0.dev20250626+cu129
+torchaudio==2.8.0.dev20250626+cu129
+torchvision==0.23.0.dev20250626+cu129
+tornado @ file:///croot/tornado_1748956929273/work
+tqdm==4.67.1
+trio==0.30.0
+trio-websocket==0.12.2
+triton==3.3.1
+typing-inspection==0.4.1
+typing_extensions==4.14.0
+ujson @ file:///croot/ujson_1736541024667/work
+undetected-chromedriver==3.5.5
+unicodedata2 @ file:///croot/unicodedata2_1736541023050/work
+urllib3==2.4.0
+webdriver-manager==4.0.2
+websocket-client==1.8.0
+websockets==15.0.1
+whatthepatch @ file:///work/perseverance-python-buildout/croot/whatthepatch_1698866493803/work
+wheel==0.45.1
+wsproto==1.2.0
+yapf @ file:///croot/yapf_1708964320665/work
+zipp @ file:///croot/zipp_1732630741423/work
