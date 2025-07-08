@@ -19,18 +19,24 @@ class PostHandler(object):
 
     @staticmethod
     def audio_handler():
-        aac_files = sorted(
-            [f for f in os.listdir(config.temp_folder) if f.endswith(".aac")],
+        audio_files = sorted(
+            [
+                f
+                for f in os.listdir(config.temp_folder)
+                if f.endswith(f".{config.temp_file_extension}")
+            ],
             key=lambda x: int(x.split(".")[0].split("_")[-1]),
         )
-        logger.info(f"Found {len(aac_files)} audio files")
+        logger.info(f"Found {len(audio_files)} audio files")
 
         processed_chunks = []
-        for file in aac_files:
+        for file in audio_files:
             audio_path = os.path.join(config.temp_folder, file)
             try:
-                if file.endswith(".aac"):
-                    audio = AudioSegment.from_file(audio_path, format="aac")
+                if file.endswith(f".{config.temp_file_extension}"):
+                    audio = AudioSegment.from_file(
+                        audio_path, format=config.temp_file_extension
+                    )
                     wav_path = os.path.join(
                         config.temp_folder, f"{os.path.splitext(file)[0]}.wav"
                     )
@@ -43,6 +49,8 @@ class PostHandler(object):
                 logger.error(f"Failed to process {file}: {e}")
 
         combined_audio_np = np.concatenate(processed_chunks)
+        if combined_audio_np.dtype != np.int16:
+            combined_audio_np = (combined_audio_np * 32767).astype(np.int16)
         combined = AudioSegment(
             combined_audio_np.tobytes(),
             frame_rate=16000,
@@ -61,13 +69,8 @@ class PostHandler(object):
         model = whisper.load_model(
             config.whisper_model_version,
             device="cuda",
-            **{
-                "word_timestamps": config.whisper_word_timestamps,
-                "temperature": config.whisper_temperature,
-                "temperature_increment_on_fallback": config.whisper_temperature_increment_on_fallback,
-            },
         )
-        audio_path = os.path.join(config.temp_folder, config.temp_mp3)
+        audio_path = os.path.join(config.temp_folder, config.temp_wav)
 
         if not os.path.exists(audio_path):
             logger.error(f"Audio file {audio_path} does not exist.")
@@ -79,6 +82,8 @@ class PostHandler(object):
             task="transcribe",
             fp16=True,
             initial_prompt=config.initial_prompt,
+            word_timestamps=config.whisper_word_timestamps,
+            temperature=config.whisper_temperature,
         )
 
         return result
