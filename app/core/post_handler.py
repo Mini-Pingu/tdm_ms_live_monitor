@@ -98,7 +98,9 @@ class PostHandler(object):
         sentences_with_meta = []
         for sentence in sentences:
             punctuation = random.choice(["，", "。"])
-            sentence_with_punctuation = f"{sentence["text"]}{punctuation}"
+            sentence_with_punctuation = (
+                f"{sentence['text'].rstrip('，。！？!?')}{punctuation}"
+            )
             sentence_with_meta = {
                 "text": sentence_with_punctuation,
                 "start": utils.convert_sec_to_min(float(sentence["start"])),
