@@ -25,6 +25,8 @@ class Config:
     whisper_word_timestamps = True
     whisper_temperature = 0.0
     whisper_temperature_increment_on_fallback = None
+    whisper_beam_size = 5
+    whisper_best_of = 5
 
     # LLM related
     llm_api_key = "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"

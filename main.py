@@ -37,8 +37,8 @@ class Crawler:
     def data_handler():
         post_handler.audio_handler()
         text = post_handler.asr_handler()
-        print("text:", text)
-        # print(post_handler.llm_handler(text))
+        print(text)
+        # post_handler.llm_handler(text)
         # self.sender.send()
 
 
