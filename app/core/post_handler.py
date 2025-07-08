@@ -1,9 +1,13 @@
 import os
 import whisper
+import librosa
+import numpy as np
+
+import noisereduce as nr  # 若需降噪
 
 from openai import OpenAI
 from pydub import AudioSegment
-from pyparsing import White
+
 
 from app.core.config import config
 from app.core.logger import logger
@@ -21,20 +25,35 @@ class PostHandler(object):
         )
         logger.info(f"Found {len(aac_files)} audio files")
 
-        combined = AudioSegment.empty()
+        processed_chunks = []
         for file in aac_files:
             audio_path = os.path.join(config.temp_folder, file)
             try:
                 if file.endswith(".aac"):
                     audio = AudioSegment.from_file(audio_path, format="aac")
-                combined += audio
+                    wav_path = os.path.join(
+                        config.temp_folder, f"{os.path.splitext(file)[0]}.wav"
+                    )
+                    audio.export(wav_path, format="wav")
+                    audio, sr = librosa.load(wav_path, sr=16000, mono=True)
+                    audio_float32 = audio.astype(np.float32)
+                    audio_denoised = nr.reduce_noise(y=audio_float32, sr=sr)
+                    processed_chunks.append(audio_denoised)
             except Exception as e:
                 logger.error(f"Failed to process {file}: {e}")
 
-        # 直接轉換為 MP3
-        mp3_path = os.path.join(config.temp_folder, config.temp_mp3)
-        combined.export(mp3_path, format="mp3")
-        logger.info(f"Converted MP3 saved to: {mp3_path}")
+        combined_audio_np = np.concatenate(processed_chunks)
+        combined = AudioSegment(
+            combined_audio_np.tobytes(),
+            frame_rate=16000,
+            sample_width=combined_audio_np.dtype.itemsize,
+            channels=1,
+        )
+
+        # 轉換為 WAV
+        output_wav_path = os.path.join(config.temp_folder, config.temp_wav)
+        combined.export(output_wav_path, format="wav")
+        logger.info(f"Converted WAV saved to: {output_wav_path}")
 
     @staticmethod
     def asr_handler():

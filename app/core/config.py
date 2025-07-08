@@ -9,7 +9,7 @@ class Config:
     }
     max_min_per_section = 30
     temp_folder = "./temp"
-    temp_mp3 = "temp.mp3"
+    temp_wav = "temp.wav"
 
     # tdm related
     # tdm_live_program_url = "https://www.tdm.com.mo/api/v1.0/live/3/playlist"
@@ -19,7 +19,8 @@ class Config:
 
     # ASR related
     whisper_model_version = "large-v2"
-    initial_prompt = "這是澳門的一個電臺節目文本內容，一定要有標點符號。大家好，歡迎收聽澳門講場。早安，感謝邀請我來參加節目。今天我們將討論澳門的最新發展，請嘉賓分享一下看法。好的，非常樂意。最近澳門的經濟發展非常迅速。一定要有標點符號。"
+    # initial_prompt = "這是澳門的一個電臺節目文本內容，一定要有標點符號。大家好，歡迎收聽澳門講場。早安，感謝邀請我來參加節目。今天我們將討論澳門的最新發展，請嘉賓分享一下看法。好的，非常樂意。最近澳門的經濟發展非常迅速。一定要有標點符號。"
+    initial_prompt = "這是澳門電臺節目轉文字內容，需包含完整標點符號。請注意澳門方言與專有名詞。範例：『大家好，歡迎收聽澳門講場。早安，感謝邀請我來參加節目。』"
     whisper_word_timestamps = True
     whisper_temperature = 0.0
     whisper_temperature_increment_on_fallback = None
