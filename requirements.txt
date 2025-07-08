@@ -5,9 +5,11 @@ astroid @ file:///croot/astroid_1736455921794/work
 atomicwrites==1.4.0
 attrs==25.3.0
 autopep8 @ file:///croot/autopep8_1708962882016/work
+beautifulsoup4==4.13.4
 black @ file:///croot/black_1737659122412/work
 Brotli @ file:///croot/brotli-split_1736182456865/work
 brotlicffi @ file:///croot/brotlicffi_1736182461069/work
+bs4==0.0.2
 certifi==2025.6.15
 cffi @ file:///croot/cffi_1736182485317/work
 charset-normalizer==3.4.2
@@ -22,6 +24,7 @@ filelock==3.18.0
 flake8 @ file:///croot/flake8_1726157165993/work
 fonttools @ file:///croot/fonttools_1737039080035/work
 fsspec==2025.5.1
+greenlet==3.2.3
 h11==0.16.0
 hf-xet==1.1.5
 hf_transfer==0.1.9
@@ -71,6 +74,7 @@ parso @ file:///croot/parso_1733963305961/work
 pathspec @ file:///work/perseverance-python-buildout/croot/pathspec_1698805478393/work
 pillow==11.2.1
 platformdirs==4.3.8
+playwright==1.53.0
 pluggy @ file:///croot/pluggy_1733169602837/work
 pyasn1 @ file:///Users/ktietz/demo/mc3/conda-bld/pyasn1_1629708007385/work
 pyasn1-modules==0.2.8
@@ -80,6 +84,7 @@ pydantic==2.11.7
 pydantic_core==2.33.2
 pydocstyle @ file:///work/perseverance-python-buildout/croot/pydocstyle_1698865417470/work
 pydub==0.25.1
+pyee==13.0.0
 pyflakes @ file:///croot/pyflakes_1708962956225/work
 pylint @ file:///croot/pylint_1743709189542/work
 pyls-spyder==0.4.0
@@ -102,13 +107,15 @@ PyYAML==6.0.2
 regex==2024.11.6
 requests==2.32.4
 rope @ file:///croot/rope_1743709207023/work
-selenium==4.34.0
+schedule==1.2.2
+selenium==4.34.1
 setuptools==72.1.0
 sip @ file:///croot/sip_1738856193618/work
 six @ file:///croot/six_1744271502820/work
 sniffio==1.3.1
 snowballstemmer @ file:///tmp/build/80754af9/snowballstemmer_1637937080595/work
 sortedcontainers==2.4.0
+soupsieve==2.7
 sympy==1.14.0
 tiktoken==0.9.0
 tomli @ file:///work/perseverance-python-buildout/croot/tomli_1698805555176/work
@@ -126,7 +133,7 @@ typing_extensions==4.14.0
 ujson @ file:///croot/ujson_1736541024667/work
 undetected-chromedriver==3.5.5
 unicodedata2 @ file:///croot/unicodedata2_1736541023050/work
-urllib3==2.4.0
+urllib3 @ file:///croot/urllib3_1750775463400/work
 webdriver-manager==4.0.2
 websocket-client==1.8.0
 websockets==15.0.1
