@@ -1,35 +1,39 @@
 import requests
-from app.core.config import Config
+
+from app.core.logger import logger
 from app.core.utils import utils
+from app.core.config import config
 
 
 class Sender:
-    def __init__(self):
-        self.wild_box_url = Config.wild_box_url
 
-    def send(self, meta, audio):
+    @staticmethod
+    def send(payload: dict) -> dict:
         """
         Sends data to the Wild Box API.
 
-        :param meta: Dictionary containing metadata about the audio.
-        :param audio: Path to the audio file to be sent.
+        :param payload: A dictionary containing the data to be sent.
         :return: Response from the API.
         """
 
+        logger.info("Sending data to Wild Box API...")
         data = {
-            "title": meta.get("title", ""),
-            "sumarization": meta.get("sumarization", ""),
-            "date": meta.get("date", ""),
-            "source": meta.get("source", ""),
-            "audioFrequencyData": utils.convert_audio_base64(audio),
-            "dialogs": meta.get("dialogs", []),
-            "subjects": meta.get("subjects", []),
+            "title": payload.get("title", ""),
+            "sumarization": payload.get("sumarization", ""),
+            "date": payload.get("date", ""),
+            "source": payload.get("source", ""),
+            "audioFrequencyData": payload.get("audioFrequencyData", ""),
+            "dialogs": payload.get("dialogs", []),
+            "subjects": payload.get("subjects", []),
         }
 
         try:
-            response = requests.post(self.wild_box_url, json=data)
-            response.raise_for_status()  # Raise an error for bad responses
+            response = requests.post(config.wild_box_url, json=data)
+            response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
             print(f"Error sending data: {e}")
-            return None
+            return {"error": str(e)}
+
+
+sender = Sender()

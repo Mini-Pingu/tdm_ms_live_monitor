@@ -2,6 +2,7 @@ import os
 import re
 import whisper
 import librosa
+import datetime
 import numpy as np
 
 import noisereduce as nr  # 若需降噪
@@ -95,7 +96,9 @@ class PostHandler(object):
         # 处理结果，添加句子结尾的标点符号
         # 這裏檢查有沒有漏掉的句子（根據時間是否連續來判斷）
         sentences = result["segments"]
-        sentences_with_meta = []
+        total_text = ""
+        dialogs = []
+
         grouped = {}
         for sentence in sentences:
             start_interval = int(sentence["start"] // config.interval) * config.interval
@@ -109,25 +112,26 @@ class PostHandler(object):
         for (start, end), texts in sorted(grouped.items()):
             time_str = utils.format_interval(start)
             combined_text = " ".join(texts)
-            fine_tuned_text = llm_handler.analysis(
+            raw_text = llm_handler.analysis(
                 text=combined_text, prompt=config.sentence_format_prompt
             )
             fine_tuned_text = re.sub(
                 r"[^\u4e00-\u9fff，。！？；：「」『』、（）—…《》〈〉·]",
                 "",
-                fine_tuned_text,
+                raw_text,
             )
-            sentence = {
+            total_text += fine_tuned_text
+            dialog = {
                 "timeStr": time_str,
                 "text": fine_tuned_text,
             }
 
-            sentences_with_meta.append(sentence)
+            dialogs.append(dialog)
 
-        return sentences_with_meta
+        return dialogs, total_text
 
     @staticmethod
-    def llm_handler(text: str = ""):
+    def analyze_handler(text: str = ""):
         logger.info(f"Starting LLM processing")
         client = OpenAI(
             api_key=config.llm_api_key, base_url="https://api.perplexity.ai"
@@ -152,6 +156,22 @@ class PostHandler(object):
         )
 
         return utils.extract_json_from_text(result_response.choices[0].message.content)
+
+    @staticmethod
+    def output_handler(dialog_text, analyzed_text):
+        """
+        Outputs the processed dialog text and analyzed text to a file.
+        """
+        output = {}
+        audio_path = os.path.join(config.temp_folder, config.temp_wav)
+        output["title"] = analyzed_text["title"]
+        output["sumarization"] = analyzed_text["summarization"]
+        output["date"] = datetime.datetime.now().strftime("%Y-%m-%d")
+        output["source"] = config.source
+        output["dialogs"] = dialog_text
+        output["audioFrequencyData"] = utils.convert_audio_base64(audio_path)
+        output["subjects"] = analyzed_text["subjects"]
+        return output
 
 
 post_handler = PostHandler()

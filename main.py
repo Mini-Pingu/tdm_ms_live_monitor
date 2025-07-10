@@ -5,16 +5,15 @@ import datetime
 import schedule
 
 from app.core.config import config
-from app.core.sender import Sender
 from app.core.audio_fetcher import AudioFetcher
 from app.core.post_handler import post_handler
 from app.core.logger import logger
+from app.core.sender import sender
 
 
 class Crawler:
     def __init__(self):
         self.audio_fetcher = AudioFetcher()
-        self.sender = Sender()
 
         if not os.path.exists(config.temp_folder):
             os.makedirs(config.temp_folder)
@@ -36,10 +35,11 @@ class Crawler:
     @staticmethod
     def data_handler():
         post_handler.audio_handler()
-        text = post_handler.asr_handler()
-        print(text)
-        # post_handler.llm_handler(text)
-        # self.sender.send()
+        dialog_text, total_text = post_handler.asr_handler()
+        analyzed_text = post_handler.analyze_handler(total_text)
+        output = post_handler.output_handler(dialog_text, analyzed_text)
+        response = sender.send(output)
+        print("response:", response)
 
 
 def main():

@@ -77,7 +77,7 @@ class Utils(object):
                         break
                     json_lines.append(next_line)
                 json_content = "\n".join(json_lines)
-                return json_content
+                return json.loads(json_content)
         raise ValueError("No JSON code block found in the text.")
 
 
