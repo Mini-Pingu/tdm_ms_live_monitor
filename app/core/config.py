@@ -28,6 +28,10 @@ class Config:
     whisper_beam_size = 5
     whisper_best_of = 5
 
+    interval = 120
+    sentence_format_model = "sonar"
+    sentence_format_prompt = "以上內容，給我更新最合適的標點符號，並且其中內容中有關類似澳門地方名稱的和澳門政府部門與單位都給我更改爲正確的，其他的文字內容一定要不變。只需要提供想要的文字就可以，其他除了修改後的文字都不要（譬如解釋，註釋等）。因爲我要直接用於結構化數據分析。"
+
     # LLM related
     llm_api_key = "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"
     llm_model = "sonar-reasoning-pro"

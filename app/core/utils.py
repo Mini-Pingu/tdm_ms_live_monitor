@@ -18,6 +18,12 @@ class Utils(object):
         return f"{minutes}:{secs:.2f}"
 
     @staticmethod
+    def format_interval(t):
+        m = int(t // 60)
+        s = int(t % 60)
+        return f"{m:02}:{s:02}"
+
+    @staticmethod
     def extract_json_from_markdown(text_string: str) -> dict:
         """
         從包含Markdown JSON代碼塊的字符串中抽取並解析JSON內容。

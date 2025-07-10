@@ -8,10 +8,13 @@ class LLM(object):
             api_key=config.llm_api_key, base_url="https://api.perplexity.ai"
         )
 
-    def analysis(self):
+    def analysis(self, model: str = "sonar", text: str = "", prompt: str = ""):
         response = self.client.chat.completions.create(
-            model="sonar",  # 可选模型，按需更换
-            messages=[{"role": "user", "content": "你好，Perplexity！"}],
+            model=model,
+            messages=[{"role": "user", "content": f"{text} ||| {prompt}"}],
         )
 
-        return response.model_dump()
+        return response.choices[0].message.content
+
+
+llm_handler = LLM()

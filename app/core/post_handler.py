@@ -1,5 +1,5 @@
 import os
-import random
+import re
 import whisper
 import librosa
 import numpy as np
@@ -12,6 +12,7 @@ from pydub import AudioSegment
 from app.core.config import config
 from app.core.logger import logger
 from app.core.utils import utils
+from app.core.llm import llm_handler
 
 
 class PostHandler(object):
@@ -95,17 +96,33 @@ class PostHandler(object):
         # 這裏檢查有沒有漏掉的句子（根據時間是否連續來判斷）
         sentences = result["segments"]
         sentences_with_meta = []
+        grouped = {}
         for sentence in sentences:
-            punctuation = random.choice(["，", "。"])
-            sentence_with_punctuation = (
-                f"{sentence['text'].rstrip('，。！？!?')}{punctuation}"
+            start_interval = int(sentence["start"] // config.interval) * config.interval
+            end_interval = start_interval + config.interval
+            key = (start_interval, end_interval)
+
+            if key not in grouped:
+                grouped[key] = []
+            grouped[key].append(sentence["text"].strip())
+
+        for (start, end), texts in sorted(grouped.items()):
+            time_str = utils.format_interval(start)
+            combined_text = " ".join(texts)
+            fine_tuned_text = llm_handler.analysis(
+                text=combined_text, prompt=config.sentence_format_prompt
             )
-            sentence_with_meta = {
-                "text": sentence_with_punctuation,
-                "start": utils.convert_sec_to_min(float(sentence["start"])),
-                "end": utils.convert_sec_to_min(float(sentence["end"])),
+            fine_tuned_text = re.sub(
+                r"[^\u4e00-\u9fff，。！？；：「」『』、（）—…《》〈〉·]",
+                "",
+                fine_tuned_text,
+            )
+            sentence = {
+                "timeStr": time_str,
+                "text": fine_tuned_text,
             }
-            sentences_with_meta.append(sentence_with_meta)
+
+            sentences_with_meta.append(sentence)
 
         return sentences_with_meta
 
