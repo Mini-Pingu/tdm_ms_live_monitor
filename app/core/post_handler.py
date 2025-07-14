@@ -30,6 +30,7 @@ class PostHandler(object):
             ],
             key=lambda x: int(x.split(".")[0].split("_")[-1]),
         )
+        logger.info(f"====================================")
         logger.info(f"Found {len(audio_files)} audio files")
 
         processed_chunks = []
@@ -92,9 +93,6 @@ class PostHandler(object):
             best_of=config.whisper_best_of,
         )
 
-        # ToDo:
-        # 处理结果，添加句子结尾的标点符号
-        # 這裏檢查有沒有漏掉的句子（根據時間是否連續來判斷）
         sentences = result["segments"]
         total_text = ""
         dialogs = []
@@ -112,18 +110,14 @@ class PostHandler(object):
         for (start, end), texts in sorted(grouped.items()):
             time_str = utils.format_interval(start)
             combined_text = " ".join(texts)
-            raw_text = llm_handler.analysis(
+            combined_text = combined_text.replace("\n", "")
+            fine_tuned_text = llm_handler.analysis(
                 text=combined_text, prompt=config.sentence_format_prompt
-            )
-            fine_tuned_text = re.sub(
-                r"[^\u4e00-\u9fff，。！？；：「」『』、（）—…《》〈〉·]",
-                "",
-                raw_text,
             )
             total_text += fine_tuned_text
             dialog = {
                 "timeStr": time_str,
-                "text": fine_tuned_text,
+                "content": fine_tuned_text,
             }
 
             dialogs.append(dialog)
@@ -133,29 +127,15 @@ class PostHandler(object):
     @staticmethod
     def analyze_handler(text: str = ""):
         logger.info(f"Starting LLM processing")
-        client = OpenAI(
-            api_key=config.llm_api_key, base_url="https://api.perplexity.ai"
+        analyze_response = llm_handler.analysis(
+            model=config.llm_model, text=text, prompt=config.llm_prompt
         )
-
-        # 分析文本并生成分析结果
-        analyze_response = client.chat.completions.create(
-            model=config.llm_model,  # 可选模型，按需更换
-            messages=[{"role": "user", f"content": f"{text} ||| {config.llm_prompt}"}],
-        )
-        analyze_response_content = analyze_response.choices[0].message.content
-
-        # 整理分析结果
-        result_response = client.chat.completions.create(
+        result_response = llm_handler.analysis(
             model=config.llm_text_format_model,
-            messages=[
-                {
-                    "role": "user",
-                    f"content": f"{analyze_response_content} ||| {config.llm_text_format_prompt}",
-                }
-            ],
+            text=analyze_response,
+            prompt=config.llm_text_format_prompt,
         )
-
-        return utils.extract_json_from_text(result_response.choices[0].message.content)
+        return utils.extract_json_from_text(result_response)
 
     @staticmethod
     def output_handler(dialog_text, analyzed_text):
@@ -165,8 +145,8 @@ class PostHandler(object):
         output = {}
         audio_path = os.path.join(config.temp_folder, config.temp_wav)
         output["title"] = analyzed_text["title"]
-        output["sumarization"] = analyzed_text["summarization"]
-        output["date"] = datetime.datetime.now().strftime("%Y-%m-%d")
+        output["sumarization"] = analyzed_text["sumarization"]
+        output["date"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         output["source"] = config.source
         output["dialogs"] = dialog_text
         output["audioFrequencyData"] = utils.convert_audio_base64(audio_path)

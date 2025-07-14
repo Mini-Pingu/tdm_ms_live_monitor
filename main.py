@@ -20,10 +20,11 @@ class Crawler:
 
     def crawl(self):
         start_time = datetime.datetime.now()
+        logger.info("===================================")
+        logger.info("Starting to crawl TDM live audio...")
         while (
             datetime.datetime.now() - start_time
         ).total_seconds() < config.max_min_per_section * 60:
-            logger.info("Starting to crawl TDM live audio...")
             chunk_list = self.audio_fetcher.chunk_list_handler()
             audio_name = self.audio_fetcher.audio_list_handler(chunk_list)
             audio_file = self.audio_fetcher.audio_handler(audio_name)
@@ -39,13 +40,22 @@ class Crawler:
         analyzed_text = post_handler.analyze_handler(total_text)
         output = post_handler.output_handler(dialog_text, analyzed_text)
         response = sender.send(output)
-        print("response:", response)
+        logger.info("Wild Box API response: %s", response)
+        logger.info("Data handling completed.")
+        logger.info("===================================")
 
 
 def main():
-    crawler = Crawler()
-    # crawler.crawl()
-    crawler.data_handler()
+    try:
+        crawler = Crawler()
+        crawler.crawl()
+        crawler.data_handler()
+    finally:
+        for f in os.listdir(config.temp_folder):
+            file_path = os.path.join(config.temp_folder, f)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        logger.info("Crawling and data handling completed.")
 
     # schedule.every().day.at("00:12").do(crawler.crawl)
     #
