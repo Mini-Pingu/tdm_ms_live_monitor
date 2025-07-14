@@ -70,3 +70,6 @@ class AudioFetcher(object):
         except requests.RequestException as e:
             print(f"Error fetching audio data: {e}")
             return None
+
+
+audio_fetcher = AudioFetcher()
