@@ -45,7 +45,7 @@ class Crawler:
         logger.info("===================================")
 
 
-def main():
+def routine():
     try:
         crawler = Crawler()
         crawler.crawl()
@@ -56,17 +56,17 @@ def main():
             if os.path.isfile(file_path):
                 os.remove(file_path)
         logger.info("Crawling and data handling completed.")
+        logger.info("=====================================")
 
-    # schedule.every().day.at("00:12").do(crawler.crawl)
-    #
-    # # schedule.every().day.at("08:30").do(crawler.crawl)
-    # # schedule.every().day.at("09:00").do(crawler.crawl)
-    # # schedule.every().day.at("09:30").do(crawler.crawl)
-    # # schedule.every().day.at("10:00").do(crawler.crawl)
-    #
-    # while True:
-    #     schedule.run_pending()
-    #     time.sleep(1)
+
+def main():
+    schedule.every().day.at("08:30").do(routine)
+    schedule.every().day.at("09:05").do(routine)
+    schedule.every().day.at("09:35").do(routine)
+    schedule.every().day.at("10:05").do(routine)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 
 if __name__ == "__main__":
